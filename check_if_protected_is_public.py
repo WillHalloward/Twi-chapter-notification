@@ -17,7 +17,7 @@ while x:
     post_text = post.text.partition(' ')[0]
     if post_text == "\nProtected:":
         print("Chapter is Protected")
-        time.sleep(1)
+        time.sleep(3)
     else:
         print("Chapter is public")
         print(url)
