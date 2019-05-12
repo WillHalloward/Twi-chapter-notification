@@ -13,6 +13,7 @@ today_date = datetime.today().strftime('%Y/%m/%d')
 ahk = AHK(executable_path="C:\\Program Files\\AutoHotkey\\AutoHotkey.exe")
 x = True
 url = "https://wanderinginn.com/" + today_date
+# url = "https://wanderinginn.com/2019/05/11/6-15-k/"
 while x:
     startPage = requests.get(url)
     soup = BeautifulSoup(startPage.content, "lxml")
@@ -26,7 +27,7 @@ while x:
             print("Chapter is posted")
             x = False
             y = True
-            win = Window.from_pid(ahk, pid='10560')
+            win = Window.from_pid(ahk, pid='12608')
             clipboard.copy(url)
             win.activate()
             time.sleep(0.1)
@@ -40,7 +41,7 @@ while x:
             time.sleep(0.2)
             ahk.send_input("^v")
             time.sleep(0.2)
-            # ahk.send_input("{enter}")
+            ahk.send_input("{enter}")
             while y:
                 y = check_patreon.patreon_check(chapter)
             win.activate()
@@ -55,8 +56,8 @@ while x:
             time.sleep(0.2)
             ahk.send_input("^v")
             time.sleep(0.2)
-            # ahk.send_input("{enter}")
+            ahk.send_input("{enter}")
 
     else:
         print("Chapter is not created")
-        time.sleep(3)
+        time.sleep(2)

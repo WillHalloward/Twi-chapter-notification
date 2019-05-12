@@ -20,10 +20,9 @@ def patreon_check(chapter):
     password = re.search("(?<=<br></p><p>)(.*)(?=</p><p><br>)", body).group()
     link_url = soup.find("a").text
     if title == chapter:
-        print(title)
-        print(word_count)
-        print(link_url)
-        print(password)
+        textfile = open("chapter.txt", "w")
+        print(title + "\n" + word_count + "\n" + link_url + "\n" + password)
         clipboard.copy(title + "\n" + word_count + "\n" + link_url + "\n" + password)
+        textfile.write(link_url)
         return False
     return True

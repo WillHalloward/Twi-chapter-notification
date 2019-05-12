@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 
 x = True
 # url = "https://wanderinginn.com/2019/05/07/6-14-k/"
-url = "https://wanderinginn.com/2019/05/11/6-15-k/"
+file = open("chapter.txt", "r")
+url = file.read()
 ahk = AHK()
 while x:
     startPage = requests.get(url)
@@ -17,11 +18,11 @@ while x:
     post_text = post.text.partition(' ')[0]
     if post_text == "\nProtected:":
         print("Chapter is Protected")
-        time.sleep(3)
+        time.sleep(2)
     else:
         print("Chapter is public")
         print(url)
-        win = Window.from_pid(ahk, pid='10560')
+        win = Window.from_pid(ahk, pid='12608')
         clipboard.copy(url)
         win.activate()
         time.sleep(0.1)
