@@ -1,10 +1,7 @@
 import json
-import re
-
 import clipboard
 import requests
 from bs4 import BeautifulSoup
-
 
 def patreon_check(chapter):
     cookies = {'session_id': 'X1Cxh3UoEqxjjf13pLcWwowFcJIta5EEbjrQK-SZRL4'}
@@ -15,14 +12,13 @@ def patreon_check(chapter):
     body = json_data['data'][0]['attributes']['content']
     title = json_data['data'][0]['attributes']['title']
     soup = BeautifulSoup(body, "lxml")
-
-    word_count = re.search("\((.*?)\)", body).group()
-    password = re.search("(?<=<br></p><p>)(.*)(?=</p><p><br>)", body).group()
+    for br in soup.find_all("br"):
+        br.replace_with("\n")
     link_url = soup.find("a").text
     if title == chapter:
         textfile = open("chapter.txt", "w")
-        print(title + "\n" + word_count + "\n" + link_url + "\n" + password)
-        clipboard.copy(title + "\n" + word_count + "\n" + link_url + "\n" + password)
+        print(title + "\n" + soup.text)
+        clipboard.copy(title + "\n" + soup.text)
         textfile.write(link_url)
         return False
     return True
