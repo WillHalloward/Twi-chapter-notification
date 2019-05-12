@@ -1,16 +1,14 @@
-import os
 import time
 from datetime import datetime
 import clipboard
 import requests
 from ahk import AHK
-from ahk.window import Window
 from bs4 import BeautifulSoup
 
 import check_patreon
 
 today_date = datetime.today().strftime('%Y/%m/%d')
-ahk = AHK(executable_path="C:\\Program Files\\AutoHotkey\\AutoHotkey.exe")
+ahk = AHK()
 x = True
 url = "https://wanderinginn.com/" + today_date
 # url = "https://wanderinginn.com/2019/05/11/6-15-k/"
@@ -27,9 +25,8 @@ while x:
             print("Chapter is posted")
             x = False
             y = True
-            win = Window.from_pid(ahk, pid='12608')
             clipboard.copy(url)
-            win.activate()
+            ahk.run_script("WinActivate, ahk_exe discord.exe", blocking=False)
             time.sleep(0.1)
             ahk.send_input("^t")
             time.sleep(0.2)
@@ -41,10 +38,10 @@ while x:
             time.sleep(0.2)
             ahk.send_input("^v")
             time.sleep(0.2)
-            ahk.send_input("{enter}")
+            #ahk.send_input("{enter}")
             while y:
                 y = check_patreon.patreon_check(chapter)
-            win.activate()
+            ahk.run_script("WinActivate, ahk_exe discord.exe", blocking=False)
             time.sleep(0.1)
             ahk.send_input("^t")
             time.sleep(0.2)
@@ -56,7 +53,7 @@ while x:
             time.sleep(0.2)
             ahk.send_input("^v")
             time.sleep(0.2)
-            ahk.send_input("{enter}")
+            #ahk.send_input("{enter}")
 
     else:
         print("Chapter is not created")
