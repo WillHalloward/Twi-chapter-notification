@@ -1,10 +1,12 @@
 import json
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
 import cookie
+
 
 def patreon_check(chapter):
     page = requests.get(
@@ -34,6 +36,5 @@ def patreon_check(chapter):
         textfile.write(link_url)
         return False
     else:
-        time_now = datetime.today().strftime('%X')
-        print("[" + time_now + "] Password not posted")
+        print("[" + datetime.today().strftime('%X') + "] Password not posted")
     return True
