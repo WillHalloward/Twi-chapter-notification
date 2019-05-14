@@ -1,15 +1,13 @@
 import time
-
-import clipboard
+from discord_webhook import DiscordWebhook
 import requests
-from ahk import AHK
 from bs4 import BeautifulSoup
 from datetime import datetime
+import cookie
 
 x = True
 # url = "https://wanderinginn.com/2019/05/07/6-14-k/"
 url = open("chapter.txt", "r").read()
-ahk = AHK()
 while x:
     startPage = requests.get(url)
     soup = BeautifulSoup(startPage.content, "lxml")
@@ -22,23 +20,6 @@ while x:
     else:
         print("Chapter is public")
         print(url)
-        clipboard.copy(url + " Chapter public")
-        ahk.run_script("WinActivate, ahk_exe discord.exe", blocking=False)
-        time.sleep(0.2)
-        win = ahk.active_window
-        ahk.send_input("^t")
-        time.sleep(0.2)
-        ahk.send_input("public-spoilers")
-        time.sleep(0.2)
-        ahk.send_input("{enter}")
-        time.sleep(0.2)
-        ahk.send_input("{Esc}{Esc}")
-        time.sleep(0.2)
-        if win.title == b"#public-spoilers - Discord":
-            ahk.send_input("^a^v")
-            time.sleep(0.2)
-            ahk.send_input("{enter}")
-        else:
-            print("Error, channel not found/Discord not open")
-            exit()
+        webhook = DiscordWebhook(url=cookie.spidey_webhook, content=url + " Chapter public")
+        webhook.execute()
         x = False

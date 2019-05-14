@@ -1,14 +1,12 @@
 import time
 from datetime import datetime
-import clipboard
 import requests
-from ahk import AHK
 from bs4 import BeautifulSoup
-
+from discord_webhook import DiscordWebhook, DiscordEmbed
 import check_patreon
+import cookie
 
 today_date = datetime.today().strftime('%Y/%m/%d')
-ahk = AHK()
 x = True
 url = "https://wanderinginn.com/" + today_date
 # url = "https://wanderinginn.com/2019/05/11/6-15-k/"
@@ -26,45 +24,16 @@ while x:
             x = False
             y = True
             link_url = post.find('a')['href']
-            clipboard.copy(link_url + " Chapter created")
-            ahk.run_script("WinActivate, ahk_exe discord.exe", blocking=False)
-            time.sleep(0.2)
-            win = ahk.active_window
-            ahk.send_input("^t")
-            time.sleep(0.2)
-            ahk.send_input("patreon-spoilers")
-            time.sleep(0.2)
-            ahk.send_input("{enter}")
-            time.sleep(0.2)
-            ahk.send_input("{Esc}{Esc}")
-            time.sleep(0.2)
-            if win.title == b"#patreon-spoilers - Discord":
-                ahk.send_input("^a^v")
-                time.sleep(0.2)
-                ahk.send_input("{enter}")
-            else:
-                print("Error, channel not found/Discord not open")
-                exit()
+            webhook = DiscordWebhook(url=cookie.spidey_webhook)
+            embed = DiscordEmbed(title='New chapter', description=chapter, color=000000)
+            embed.set_thumbnail(
+                url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')
+            embed.add_embed_field(name='Link', value=link_url)
+            webhook.add_embed(embed)
+            webhook.execute()
             while y:
                 time.sleep(1)
                 y = check_patreon.patreon_check(chapter)
-            ahk.run_script("WinActivate, ahk_exe discord.exe", blocking=False)
-            time.sleep(0.1)
-            ahk.send_input("^t")
-            time.sleep(0.2)
-            ahk.send_input("patreon-spoilers")
-            time.sleep(0.2)
-            ahk.send_input("{enter}")
-            time.sleep(0.2)
-            ahk.send_input("{Esc}{Esc}")
-            time.sleep(0.2)
-            if win.title == b"#patreon-spoilers - Discord":
-                ahk.send_input("^a^v")
-                time.sleep(0.2)
-                ahk.send_input("{enter}")
-            else:
-                print("Error, channel not found/Discord not open")
-                exit()
 
     else:
         time_now = datetime.today().strftime('%X')
