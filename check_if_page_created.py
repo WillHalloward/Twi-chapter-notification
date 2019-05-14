@@ -25,9 +25,11 @@ while x:
             print("Chapter is posted")
             x = False
             y = True
-            clipboard.copy(url)
+            link_url = post.find('a')['href']
+            clipboard.copy(link_url + " Chapter created")
             ahk.run_script("WinActivate, ahk_exe discord.exe", blocking=False)
-            time.sleep(0.1)
+            time.sleep(0.2)
+            win = ahk.active_window
             ahk.send_input("^t")
             time.sleep(0.2)
             ahk.send_input("patreon-spoilers")
@@ -36,10 +38,15 @@ while x:
             time.sleep(0.2)
             ahk.send_input("{Esc}{Esc}")
             time.sleep(0.2)
-            ahk.send_input("^v")
-            time.sleep(0.2)
-            #ahk.send_input("{enter}")
+            if win.title == b"#patreon-spoilers - Discord":
+                ahk.send_input("^a^v")
+                time.sleep(0.2)
+                ahk.send_input("{enter}")
+            else:
+                print("Error, channel not found/Discord not open")
+                exit()
             while y:
+                time.sleep(1)
                 y = check_patreon.patreon_check(chapter)
             ahk.run_script("WinActivate, ahk_exe discord.exe", blocking=False)
             time.sleep(0.1)
@@ -51,10 +58,15 @@ while x:
             time.sleep(0.2)
             ahk.send_input("{Esc}{Esc}")
             time.sleep(0.2)
-            ahk.send_input("^v")
-            time.sleep(0.2)
-            #ahk.send_input("{enter}")
+            if win.title == b"#patreon-spoilers - Discord":
+                ahk.send_input("^a^v")
+                time.sleep(0.2)
+                ahk.send_input("{enter}")
+            else:
+                print("Error, channel not found/Discord not open")
+                exit()
 
     else:
-        print("Chapter is not created")
-        time.sleep(2)
+        time_now = datetime.today().strftime('%X')
+        print("[" + time_now + "] Chapter is not created")
+        time.sleep(10)
