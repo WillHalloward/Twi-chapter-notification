@@ -12,11 +12,11 @@ def patreon_check(chapter):
         cookies=cookie.cookies)
     json_data = json.loads(page.text)
     try:
-        body = json_data['data'][1]['attributes']['content']
+        body = json_data['data'][0]['attributes']['content']
     except:
         print("No access")
         exit()
-    title = json_data['data'][1]['attributes']['title']
+    title = json_data['data'][0]['attributes']['title']
     if title == chapter:
         soup = BeautifulSoup(body, "lxml")
         for br in soup.find_all("br"):
