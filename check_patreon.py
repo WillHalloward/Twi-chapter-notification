@@ -14,20 +14,21 @@ def patreon_check(chapter):
         cookies=cookie.cookies)
     json_data = json.loads(page.text)
     try:
-        body = json_data['data'][0]['attributes']['content']
+        content = json_data['data'][0]['attributes']['content']
     except:
         print("No access")
         exit()
     title = json_data['data'][0]['attributes']['title']
-    if title == chapter:
-        soup = BeautifulSoup(body, "lxml")
+    post_type = json_data['data'][0]['attributes']['post_type']
+    if title == chapter and post_type == "text_only":
+        soup = BeautifulSoup(content, "lxml")
         for br in soup.find_all("br"):
             br.replace_with("\n")
         text = "```" + soup.text.replace("\n", "```\n", 1)
         link_url = soup.find("a").text
         textfile = open("chapter.txt", "w")
         print(title + "\n" + soup.text)
-        webhook = DiscordWebhook(url=cookie.spidey_webhook)
+        webhook = DiscordWebhook(url=cookie.patreon_spoilers)
         embed = DiscordEmbed(title='Password posted', description=title, color=000000)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')
         embed.add_embed_field(name='Post', value=text)

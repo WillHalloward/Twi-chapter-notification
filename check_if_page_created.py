@@ -24,7 +24,7 @@ while x:
         x = False
         y = True
         link_url = post.find('a')['href']
-        webhook = DiscordWebhook(url=cookie.spidey_webhook)
+        webhook = DiscordWebhook(url=cookie.patreon_spoilers)
         embed = DiscordEmbed(title='New chapter', description=chapter, color=000000)
         embed.set_thumbnail(
             url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')

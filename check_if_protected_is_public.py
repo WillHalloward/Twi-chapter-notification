@@ -8,7 +8,6 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import cookie
 
 x = True
-# url = "https://wanderinginn.com/2019/04/27/6-11/" #Testing
 url = open("chapter.txt", "r").read()
 while x:
     startPage = requests.get(url)
@@ -24,7 +23,7 @@ while x:
         print("Chapter is public")
         print(url)
         print(post_text)
-        webhook = DiscordWebhook(url=cookie.spidey_webhook)
+        webhook = DiscordWebhook(url=cookie.public_spoilers)
         embed = DiscordEmbed(title='Chapter public', description=post.text, color=000000)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')
         embed.add_embed_field(name='Link', value=url)
