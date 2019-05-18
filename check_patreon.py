@@ -20,6 +20,8 @@ def patreon_check(chapter):
         exit()
     title = json_data['data'][0]['attributes']['title']
     post_type = json_data['data'][0]['attributes']['post_type']
+    # TODO Rebuild if check so that it instead goes by date. Checks the date of the creation of the webpage,
+    #  and then looks for patreon announcements created after that date. should be better than comparing titles.
     if title == chapter and post_type == "text_only":
         soup = BeautifulSoup(content, "lxml")
         for br in soup.find_all("br"):
@@ -33,6 +35,7 @@ def patreon_check(chapter):
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')
         embed.add_embed_field(name='Post', value=text)
         webhook.add_embed(embed)
+        webhook.content = "@here"
         webhook.execute()
         textfile.write(link_url)
         return False
