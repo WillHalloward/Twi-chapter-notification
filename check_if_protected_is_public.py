@@ -13,7 +13,6 @@ while x:
     startPage = requests.get(url)
     soup = BeautifulSoup(startPage.content, "lxml")
     post = soup.find("h1", {"class": "entry-title"})
-    print(post.text)
     post_text = post.text.partition(' ')[0]
     if post_text == "Protected:":
         time_now = datetime.today().strftime('%X')

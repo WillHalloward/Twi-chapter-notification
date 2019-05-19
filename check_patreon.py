@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import requests
 from bs4 import BeautifulSoup
@@ -8,21 +8,19 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import cookie
 
 
-def patreon_check(chapter):
+def patreon_check(chapter, page_created):
     page = requests.get(
         "https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211&filter[is_draft]=false&filter[contains_exclusive_posts]=true",
         cookies=cookie.cookies)
     json_data = json.loads(page.text)
-    try:
-        content = json_data['data'][0]['attributes']['content']
-    except:
-        print("No access")
-        exit()
+    content = json_data['data'][0]['attributes']['content']
     title = json_data['data'][0]['attributes']['title']
-    post_type = json_data['data'][0]['attributes']['post_type']
-    # TODO Rebuild if check so that it instead goes by date. Checks the date of the creation of the webpage,
-    #  and then looks for patreon announcements created after that date. should be better than comparing titles.
-    if title == chapter and post_type == "text_only":
+    patreon_time = json_data['data'][0]['attributes']['edited_at']
+    patreon_time_converted = datetime.strptime(patreon_time, '%Y-%m-%dT%H:%M:%S.%f+00:00')
+    patreon_time_converted = patreon_time_converted + timedelta(hours=2)
+    print(page_created)
+    print(patreon_time_converted)
+    if page_created < patreon_time_converted:
         soup = BeautifulSoup(content, "lxml")
         for br in soup.find_all("br"):
             br.replace_with("\n")

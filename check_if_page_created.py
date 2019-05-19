@@ -17,6 +17,7 @@ while x:
     soup = BeautifulSoup(startPage.content, "lxml")
     check_404 = soup.find("article", {"id": "post-0"})
     if check_404 is None:
+        page_created = datetime.now()
         post = soup.find("h1", {"class": "entry-title"})
         chapter = post.text.split(':')[1].strip()
         print(chapter)
@@ -33,7 +34,7 @@ while x:
         webhook.execute()
         while y:
             time.sleep(1)
-            y = check_patreon.patreon_check(chapter)
+            y = check_patreon.patreon_check(chapter, page_created)
 
     else:
         print("[" + datetime.today().strftime('%X') + "] Chapter is not created")
