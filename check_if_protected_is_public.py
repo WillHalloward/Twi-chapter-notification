@@ -22,7 +22,7 @@ while x:
         print("Chapter is public")
         print(url)
         print(post_text)
-        webhook = DiscordWebhook(url=cookie.public_spoilers)
+        webhook = DiscordWebhook(url=cookie.spidey_bot)
         embed = DiscordEmbed(title='Chapter public', description=post.text, color=000000)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')
         embed.add_embed_field(name='Link', value=url)

@@ -10,7 +10,9 @@ import cookie
 
 today_date = datetime.today().strftime('%Y/%m/%d')
 x = True
-url = "https://wanderinginn.com/" + today_date
+# url = "https://wanderinginn.com/" + today_date
+url = "https://wanderinginn.com/2019/05/18/"
+textfile = open("chapter.txt", "w+")
 
 while x:
     startPage = requests.get(url)
@@ -25,16 +27,19 @@ while x:
         x = False
         y = True
         link_url = post.find('a')['href']
-        webhook = DiscordWebhook(url=cookie.patreon_spoilers)
+        print(link_url)
+        textfile.write(link_url)
+        textfile.close()
+        webhook = DiscordWebhook(url=cookie.spidey_bot)
         embed = DiscordEmbed(title='New chapter', description=chapter, color=000000)
         embed.set_thumbnail(
-            url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')
+            url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.pippng')
         embed.add_embed_field(name='Link', value=link_url)
         webhook.add_embed(embed)
         webhook.execute()
         while y:
             time.sleep(1)
-            y = check_patreon.patreon_check(chapter, page_created)
+            y = check_patreon.patreon_check(page_created)
 
     else:
         print("[" + datetime.today().strftime('%X') + "] Chapter is not created")
