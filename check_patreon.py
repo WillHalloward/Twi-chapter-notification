@@ -8,7 +8,7 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import cookie
 
 
-def patreon_check(page_created):
+def patreon_check(page_created, chapter_title):
     page = requests.get(
         "https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211&filter[is_draft]=false&filter[contains_exclusive_posts]=true",
         cookies=cookie.cookies)
@@ -18,7 +18,7 @@ def patreon_check(page_created):
     patreon_time = json_data['data'][0]['attributes']['edited_at']
     patreon_time_converted = datetime.strptime(patreon_time, '%Y-%m-%dT%H:%M:%S.%f+00:00')
     patreon_time_converted = patreon_time_converted + timedelta(hours=2)
-    if page_created < patreon_time_converted:
+    if page_created < patreon_time_converted and title == chapter_title:
         soup = BeautifulSoup(content, "lxml")
         for br in soup.find_all("br"):
             br.replace_with("\n")
