@@ -1,9 +1,30 @@
-# patreon-scraping-twi
-A python script to automatically alert and post when a new chapter from “The wandering inn” is posted or made public. 
-Works via the request library, Beautiful soup 4 and patreon api. 
+# Patreon and website scraper & alerter
 
-Check_if_page_created.py needs a valid www.patreon.com cookie with subscription to https://www.patreon.com/pirateaba/posts for validation to reach the patreon post content. 
-The patreon target can be changed via changing "[campaign_id]=xxxxxxxx"
-  page = requests.get(
-        "https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211&filter[is_draft]=false&filter[contains_exclusive_posts]=true"
-in check_patreon.py
+A program made to scrape and watch a website for changes and then alert by posting to discord and reddit when changes are detected. 
+
+## Function
+
+The script works by continusally watching a given url for a specfic element via beautfulsoup 4 and alerting if the elements changes. 
+
+This trigger the second script which is either a reddit command to post the url to a subreddit, or to start watching a patreon page instead. 
+
+If a post is detected on patreon which matches the condidtion given it will then post the content off the post to discord via a webhook. 
+
+## Usage
+
+To use for own use you need to create a "secrets.py" file which contains a couple of things depending on which part of the program you need. 
+
+```python
+# Patreon cookie
+cookies = {'session_id': 'COOKIE HERE'}
+# Discord webhooks
+spidey_bot = "DISCORD WEBHOOK HERE"
+# Reddit bot information
+client_id = "client id here"
+client_secret = "client secret here"
+user_agent = "user agent here"
+username = "username here"
+password = "password here"
+
+```
+
