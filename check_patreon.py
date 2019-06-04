@@ -5,13 +5,13 @@ import requests
 from bs4 import BeautifulSoup
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
-import cookie
+import secrets
 
 
 def patreon_check(page_created, chapter_title):
     page = requests.get(
         "https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211&filter[is_draft]=false&filter[contains_exclusive_posts]=true",
-        cookies=cookie.cookies)
+        cookies=secrets.cookies)
     json_data = json.loads(page.text)
     content = json_data['data'][0]['attributes']['content']
     title = json_data['data'][0]['attributes']['title']
@@ -24,7 +24,7 @@ def patreon_check(page_created, chapter_title):
             br.replace_with("\n")
         text = "```" + soup.text.replace("\n", "```\n", 1)
         print(title + "\n" + soup.text)
-        webhook = DiscordWebhook(url=cookie.spidey_bot)
+        webhook = DiscordWebhook(url=secrets.patreon_spoilers)
         embed = DiscordEmbed(title='Password posted', description=title, color=000000)
         embed.set_thumbnail(url='https://cdn.discordapp.com/attachments/577548376929992734/577866147236544513/erin.png')
         embed.add_embed_field(name='Post', value=text)
