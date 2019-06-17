@@ -1,10 +1,11 @@
 import praw
-
+import os
 import secrets
 
 
 def post_to_reddit(p_title):
-    url = open("chapter.txt", "r").read()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    url = open(dir_path + "/chapter.txt", "r").read()
     reddit = praw.Reddit(client_id=secrets.client_id,
                          client_secret=secrets.client_secret,
                          user_agent=secrets.user_agent,

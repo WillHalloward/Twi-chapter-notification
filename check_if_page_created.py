@@ -1,6 +1,8 @@
+#! /usr/bin/python3
 import time
 from datetime import datetime
 
+import os
 import requests
 from bs4 import BeautifulSoup
 from discord_webhook import DiscordWebhook, DiscordEmbed
@@ -8,11 +10,11 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import check_patreon
 import secrets
 
-print("[" + datetime.today().strftime('%X:%f') + "]  Program start")
+print("[" + datetime.today().strftime('%X:%f') + "] Program start")
 today_date = datetime.today().strftime('%Y/%m/%d')
 x = True
 url = "https://wanderinginn.com/" + today_date
-# url = "https://wanderinginn.com/2019/05/21/"
+# url = "https://wanderinginn.com/2019/06/15/"
 print("[" + datetime.today().strftime('%X:%f') + "] Attempting to reach " + url)
 while x:
     startPage = requests.get(url)
@@ -29,12 +31,13 @@ while x:
         y = True
         link_url = post.find('a')['href']
         print(link_url)
-        print("[" + datetime.today().strftime('%X:%f') + "]  Attempting to write to file")
-        textfile = open("chapter.txt", "w+")
+        print("[" + datetime.today().strftime('%X:%f') + "] Attempting to write to file")  
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        textfile = open(dir_path + "/chapter.txt", "w+")
         textfile.write(link_url)
         textfile.close()
-        print("[" + datetime.today().strftime('%X:%f') + "]  Succeeded to write to file")
-        print("[" + datetime.today().strftime('%X:%f') + "]  Attempting to post to Discord")
+        print("[" + datetime.today().strftime('%X:%f') + "] Succeeded to write to file")
+        print("[" + datetime.today().strftime('%X:%f') + "] Attempting to post to Discord")
         webhook = DiscordWebhook(url=secrets.patreon_spoilers)
         embed = DiscordEmbed(title='New chapter', description=chapter, color=000000)
         embed.set_thumbnail(
@@ -42,11 +45,11 @@ while x:
         embed.add_embed_field(name='Link', value=link_url)
         webhook.add_embed(embed)
         webhook.execute()
-        print("[" + datetime.today().strftime('%X:%f') + "]  Succeeded to post to Discord")
-        print("[" + datetime.today().strftime('%X:%f') + "]  Attempting to get password")
+        print("[" + datetime.today().strftime('%X:%f') + "] Succeeded to post to Discord")
+        print("[" + datetime.today().strftime('%X:%f') + "] Attempting to get password")
         while y:
             y = check_patreon.patreon_check(p_date_converted, chapter)
-        print("[" + datetime.today().strftime('%X:%f') + "]  Succeeded to get password")
+        print("[" + datetime.today().strftime('%X:%f') + "] Succeeded to get password")
     else:
         time.sleep(10)
-print("[" + datetime.today().strftime('%X:%f') + "] " + " Program finished")
+print("[" + datetime.today().strftime('%X:%f') + "] Program finished")
