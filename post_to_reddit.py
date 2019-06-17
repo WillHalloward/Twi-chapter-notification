@@ -1,5 +1,7 @@
-import praw
 import os
+
+import praw
+
 import secrets
 
 

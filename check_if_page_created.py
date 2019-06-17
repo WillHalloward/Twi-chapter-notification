@@ -1,8 +1,7 @@
-#! /usr/bin/python3
+import os
 import time
 from datetime import datetime
 
-import os
 import requests
 from bs4 import BeautifulSoup
 from discord_webhook import DiscordWebhook, DiscordEmbed
@@ -31,7 +30,7 @@ while x:
         y = True
         link_url = post.find('a')['href']
         print(link_url)
-        print("[" + datetime.today().strftime('%X:%f') + "] Attempting to write to file")  
+        print("[" + datetime.today().strftime('%X:%f') + "] Attempting to write to file")
         dir_path = os.path.dirname(os.path.realpath(__file__))
         textfile = open(dir_path + "/chapter.txt", "w+")
         textfile.write(link_url)

@@ -9,7 +9,8 @@ import secrets
 
 
 def patreon_check(page_created, chapter_title):
-    page = requests.get("https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211&filter[is_draft]=false&filter[contains_exclusive_posts]=true", 
+    page = requests.get(
+        "https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211&filter[is_draft]=false&filter[contains_exclusive_posts]=true",
         cookies=secrets.cookies)
     json_data = json.loads(page.text)
     content = json_data['data'][0]['attributes']['content']
@@ -20,6 +21,7 @@ def patreon_check(page_created, chapter_title):
     if page_created < patreon_time_converted and title == chapter_title:
         print("[" + datetime.today().strftime('%X:%f') + "] Found password")
         soup = BeautifulSoup(content, "lxml")
+        text = ""
         for br in soup.find_all("br"):
             br.replace_with("\n")
             text = "```" + soup.text.replace("\n", "```\n", 1)
@@ -34,5 +36,3 @@ def patreon_check(page_created, chapter_title):
         print("[" + datetime.today().strftime('%X:%f') + "] Succeeded to post to Discord")
         return False
     return True
-
-
