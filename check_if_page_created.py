@@ -13,11 +13,11 @@ print(datetime.today().strftime('[%X:%f]') + " Program start")
 today_date = datetime.today().strftime('%Y/%m/%d')
 x = True
 url = "https://wanderinginn.com/" + today_date
-# url = "https://wanderinginn.com/2019/06/15/"
+# url = "https://wanderinginn.com/2019/07/02/"
 print(datetime.today().strftime('[%X:%f]') + " Attempting to reach " + url)
 while x:
     startPage = requests.get(url)
-    soup = BeautifulSoup(startPage.content, "lxml")
+    soup = BeautifulSoup(startPage.content, "lxml", from_encoding="UTF-8")
     check_404 = soup.find("article", {"id": "post-0"})
     if check_404 is None:
         print(datetime.today().strftime('[%X:%f]') + " Chapter is posted")
