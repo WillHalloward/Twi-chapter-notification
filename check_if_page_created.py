@@ -7,16 +7,21 @@ from bs4 import BeautifulSoup
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
 import check_patreon
+import get_patreon
 import secrets
 
 
 async def main():
     conn = await asyncpg.connect('postgresql://postgres@localhost/testDB', user=secrets.DBuser, password=secrets.DBpass)
+    headers = {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
+    }
     today_date = datetime.today().strftime('%Y/%m/%d')
     x = True
     url = "https://wanderinginn.com/" + today_date
     while x:
-        start_page = requests.get(url)
+        start_page = requests.get(url, headers=headers)
         if start_page.ok:
             soup = BeautifulSoup(start_page.content, "lxml", from_encoding="UTF-8")
             post = soup.find("h1", {"class": "entry-title"})
@@ -38,6 +43,7 @@ async def main():
                 y = await check_patreon.patreon_check(p_date_converted, chapter)
         else:
             await asyncio.sleep(10)
+    await get_patreon.get_last_patreon(conn)
 
 
 loop = asyncio.get_event_loop()

@@ -8,10 +8,14 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 
 import secrets
 
+headers = {
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache"
+}
 
 async def patreon_check(page_created, chapter_title):
     page = requests.get("https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211",
-                        cookies=secrets.cookies)
+                        cookies=secrets.cookies, headers=headers)
     json_data = json.loads(page.text)
     title = json_data['data'][0]['attributes']['title']
     title_san = re.sub(r'[^A-Za-z]', '', title)

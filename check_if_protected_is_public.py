@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
+import get_all_wordpress
 import post_to_reddit
 import secrets
 
@@ -12,8 +13,12 @@ import secrets
 async def main():
     conn = await asyncpg.connect('postgresql://postgres@localhost/testDB', user=secrets.DBuser, password=secrets.DBpass)
     url = conn.fetchrow("SELECT url FROM protected_is_public ORDER BY serial_id DESC LIMIT 1")
+    headers = {
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache"
+    }
     while True:
-        startPage = requests.get(url['url'])
+        startPage = requests.get(url['url'], headers=headers)
         if "post-password-form" in startPage.text:
             await asyncio.sleep(10)
         else:
@@ -28,6 +33,7 @@ async def main():
             webhook.execute()
             post_to_reddit.post_to_reddit(post.text, url)
             break
+    await get_all_wordpress.get_all_wordpress(startPage, conn)
 
 
 loop = asyncio.get_event_loop()
