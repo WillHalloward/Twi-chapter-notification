@@ -31,7 +31,7 @@ async def main():
             x = False
             y = True
             link_url = post.find('a')['href']
-            conn.execute("INSERT INTO protected_is_public(url, title) VALUES ($1,$2)", link_url, chapter)
+            await conn.execute("INSERT INTO protected_is_public(url, title) VALUES ($1,$2)", link_url, chapter)
             webhook = DiscordWebhook(url=secrets.patreon_spoilers)
             embed = DiscordEmbed(title='New chapter', description=chapter, color=000000)
             embed.set_thumbnail(

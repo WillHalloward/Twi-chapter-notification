@@ -13,6 +13,7 @@ headers = {
     "Pragma": "no-cache"
 }
 
+
 async def patreon_check(page_created, chapter_title):
     page = requests.get("https://www.patreon.com/api/posts?sort=-published_at&filter[campaign_id]=568211",
                         cookies=secrets.cookies, headers=headers)
