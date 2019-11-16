@@ -12,7 +12,7 @@ import secrets
 
 async def main():
     conn = await asyncpg.connect('postgresql://postgres@localhost/testDB', user=secrets.DBuser, password=secrets.DBpass)
-    url = conn.fetchrow("SELECT url FROM protected_is_public ORDER BY serial_id DESC LIMIT 1")
+    url = await conn.fetchrow("SELECT url FROM protected_is_public ORDER BY serial_id DESC LIMIT 1")
     headers = {
         "Cache-Control": "no-cache",
         "Pragma": "no-cache"
