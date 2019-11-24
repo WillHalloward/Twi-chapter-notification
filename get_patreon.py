@@ -62,7 +62,7 @@ async def get_all_patreon(conn):
                        "AND lower(title) not similar to lower('%Side Stor%') "
                        "AND serial_id NOT IN (1,3,6,7,8,10,15,18,34,97,134,185,189,243,269,116)) "
                        "AS subquery "
-                       "WHERE patreon_twi.serial_id=subquery.serial_id AND patreon_twi.password IS NOT NULL;")
+                       "WHERE patreon_twi.serial_id=subquery.serial_id AND patreon_twi.password IS NULL;")
 
 
 async def get_last_patreon(conn):
@@ -110,4 +110,6 @@ async def get_last_patreon(conn):
                        "AND lower(title) not similar to lower('%Side Stor%') "
                        "AND serial_id NOT IN (1,3,6,7,8,10,15,18,34,97,134,185,189,243,269,116)) "
                        "AS subquery "
-                       "WHERE patreon_twi.serial_id=subquery.serial_id AND patreon_twi.password IS NOT NULL;")
+                       "WHERE patreon_twi.serial_id=subquery.serial_id AND patreon_twi.password IS NULL;")
+
+    # TODO: Currently looks at entire database when updating, fix so it only looks for a certain post

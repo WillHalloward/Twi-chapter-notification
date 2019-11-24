@@ -31,7 +31,7 @@ async def main():
             embed.add_embed_field(name='Link', value=startPage.url)
             webhook.add_embed(embed)
             webhook.execute()
-            post_to_reddit.post_to_reddit(post.text, url)
+            post_to_reddit.post_to_reddit(post.text, url['url'])
             break
     await get_all_wordpress.get_all_wordpress(startPage, conn)
 
