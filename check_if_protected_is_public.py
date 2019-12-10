@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
-import get_all_wordpress
+import get_wordpress
 import post_to_reddit
 import secrets
 
@@ -33,7 +33,7 @@ async def main():
             webhook.execute()
             post_to_reddit.post_to_reddit(post.text, url['url'])
             break
-    await get_all_wordpress.get_all_wordpress(startPage, conn)
+    await get_wordpress.get_wordpress(startPage, conn)
 
 
 loop = asyncio.get_event_loop()
