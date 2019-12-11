@@ -1,5 +1,5 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 
 import asyncpg
 import requests
@@ -17,10 +17,9 @@ async def main():
         "Cache-Control": "no-cache",
         "Pragma": "no-cache"
     }
-    today_date = datetime.today().strftime('%Y/%m/%d')
     x = True
-    url = "https://wanderinginn.com/" + today_date
     while x:
+        url = "https://wanderinginn.com/" + datetime.now(timezone.utc).strftime('%Y/%m/%d')
         start_page = requests.get(url, headers=headers)
         if start_page.ok:
             soup = BeautifulSoup(start_page.content, "lxml", from_encoding="UTF-8")
