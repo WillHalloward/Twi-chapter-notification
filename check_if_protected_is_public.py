@@ -1,4 +1,7 @@
 import asyncio
+import logging
+import os
+import ssl
 
 import asyncpg
 import requests
@@ -9,9 +12,22 @@ import get_wordpress
 import post_to_reddit
 import secrets
 
+home = os.path.expanduser('~')
+logging.basicConfig(filename=f'{home}/Twi-chapter-notification/public.log',
+                    format='%(asctime)s :: %(levelname)-8s :: %(filename)s :: %(message)s',
+                    level=logging.INFO)
+context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+context.load_verify_locations(f"{home}/ssl-cert/server-ca.pem")
+context.load_cert_chain(f"{home}/ssl-cert/client-cert.pem", f"{home}/ssl-cert/client-key.pem")
+logging.basicConfig(filename=f'{home}/twi_bot_shard/cognita.log',
+                    format='%(asctime)s :: %(levelname)-8s :: %(filename)s :: %(message)s',
+                    level=logging.DEBUG)
+
 
 async def main():
-    conn = await asyncpg.connect('postgresql://postgres@localhost/testDB', user=secrets.DBuser, password=secrets.DBpass)
+    conn = await asyncpg.connect(database=secrets.database, user=secrets.DB_user,
+                                 password=secrets.DB_password,
+                                 host=secrets.host, ssl=context)
     url = await conn.fetchrow("SELECT url FROM protected_is_public ORDER BY serial_id DESC LIMIT 1")
     headers = {
         "Cache-Control": "no-cache",
