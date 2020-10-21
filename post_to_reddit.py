@@ -1,3 +1,5 @@
+import logging
+
 import praw
 
 import secrets
@@ -12,4 +14,5 @@ def post_to_reddit(p_title, url):
 
     wanderingInn = reddit.subreddit("WanderingInn")
     title = "[Discussion] - " + p_title
-    post = wanderingInn.submit(title, url=url)
+    logging.info(f"Posting to subreddit {wanderingInn} with title {title} and url {url}")
+    wanderingInn.submit(title, url=url)

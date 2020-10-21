@@ -24,6 +24,7 @@ context.load_cert_chain(f"{home}/ssl-cert/client-cert.pem", f"{home}/ssl-cert/cl
 logging.basicConfig(filename=f'{home}/twi_bot_shard/cognita.log',
                     format='%(asctime)s :: %(levelname)-8s :: %(filename)s :: %(message)s',
                     level=logging.DEBUG)
+logging.info("chapter created check starting")
 
 
 async def main():
